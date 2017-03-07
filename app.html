@@ -37,6 +37,12 @@ var Factory=function(){
 	var dummy3=document.createElement('div').appendChild(me.img_flat);
 	var dummy4=document.createElement('div').appendChild(me.img_sharp);
 	var dummy5=document.createElement('div').appendChild(me.img_note);
+	console.log(me.tc.size);
+	console.log(me.bc.size);
+	console.log(me.img_flat.size);
+	console.log(me.img_sharp.size);
+	console.log(me.img_note.size);
+
 
 	me.mkTile=function(bbox,fill,clef,sig,octave,note,mod){
 		var w=bbox[0];h=bbox[1];
@@ -56,7 +62,7 @@ var Factory=function(){
 
 		w0_clef=img_clef.width;
 		h0_clef=img_clef.height;
-		h1_clef=parseInt(0.6*h);//this needs to scale
+		h1_clef=parseInt(0.75*h);//this needs to scale;4*dy ~ dy_on_clef
 		w1_clef=parseInt(h1_clef*w0_clef/h0_clef);
 		img_clef.width=w1_clef+'';
 		img_clef.height=h1_clef+'';
@@ -71,7 +77,7 @@ var Factory=function(){
 		x0=x_offset;
 		x1=w-x_offset;
 		y0=parseInt(y_offset+h1_clef*(1-100/428));//Low A
-		dy=20;//this is the main scale parameter
+		dy=50;//this is the main scale parameter
 
 		//pre-calculate yy of note to decide if draw ledger lines:
 		cidxs=['C','D','E','F','G','A','B','C'];//counting from y0
@@ -84,8 +90,8 @@ var Factory=function(){
 			ctx.strokeStyle = 'black';
 			if(yidx<0||yidx>4){
 					ctx.strokeStyle = 'black';
-					ctx.moveTo(w/2+dy,yy);
-					ctx.lineTo(w/2+2.5*dy,yy);
+					ctx.moveTo(w/2+dy/2,yy);
+					ctx.lineTo(w/2+3*dy,yy);
 					if(y_note>yy-dy && yidx<0)ctx.stroke();
 					if(y_note<yy && yidx>4)ctx.stroke();
 			}
@@ -101,7 +107,7 @@ var Factory=function(){
 		major_intervals=[0,2,2,1,2,2,2,1];
 		white0=30;
 		white=white0;
-		whites=[white0,];
+		whites=[];
 		for(var widx=0;widx<major_intervals.length;widx++){
 			white+=octave*12+major_intervals[widx];
 			whites.push(white);
@@ -190,22 +196,42 @@ var Factory=function(){
 		var yoffset=w/2-ctx.measureText('N').width/2;
 		var offset=w/2-ctx.measureText(letter).width/2;
 		ctx.fillText(letter, offset, w-yoffset);
-		console.log("measure "+letter);
-		console.log(ctx.measureText(letter));
 		return c;
+	}
+	me.mkString=function(bbox,strarray,color,fill){
+		var w=bbox[0];h=bbox[1];
+		var c=document.createElement("canvas");
+		c.width=w;
+		c.height=h;
+		var ctx=c.getContext("2d");
+		ctx.fillStyle = fill;
+		ctx.fillRect(0,0,w,h);
+		ctx.font = w+"px Mickey";
+		ctx.fillStyle = color;
+
+		var dx=parseInt(w/strarray.length);
+		var dy=h;
+		for(var cidx=0;cidx<strarray.length;cidx++){
+			var tile=me.mkLetter([dx,dy],strarray[cidx],color,fill);
+			ctx.drawImage(tile,dx*cidx,0);
+		}
+		return c;
+
 	}
 	return me;
 }
+
 var init=function(){
 	var f=new Factory();
 	var sigs=mksigs();
 	clefs=['treble','base'];
-	var W=parseInt(window.innerWidth/5.);
+	var NCOL=3;
+	var W=parseInt(window.innerWidth/NCOL);
 //	var W=2250/10.;//parseInt(window.innerWidth/5.);
 
 	var card=document.createElement("canvas");
-	card.width=W*5;
-	card.height=W*6;
+	card.width=W*NCOL;
+	card.height=W*(NCOL+1);
 //	card.width=2550;//W*5*2;
 //	card.height=3300;//W*6*2;
 	document.body.appendChild(card);
@@ -213,29 +239,36 @@ var init=function(){
 	ctx.fillStyle = 'black';
 	ctx.fillRect(0,0,card.width,card.height);
 
-	for(var rcard=0;rcard<2;rcard++){
-	for(var ccard=0;ccard<2;ccard++){
+//	for(var rcard=0;rcard<2;rcard++){//4 cards on 8.5x11 page
+//	for(var ccard=0;ccard<2;ccard++){
 	for(var ridx=0;ridx<6;ridx++){
 	for(var cidx=0;cidx<5;cidx++){
 		clef=clefs[0];
 		//if(Math.random()>0.5)clef=clefs[1];
 		notes=['C','D','E','F','G','A','B'];
 		note=notes[parseInt(notes.length*Math.random())];
-		mod=parseInt(-2+4*Math.random());//-1,0,+1 ~ flat,natural,sharp
+		mod=0;//parseInt(-2+4*Math.random());//-1,0,+1 ~ flat,natural,sharp
 		sig_idx=0;//parseInt(8-Math.random()*(15.)).toString();
-		console.log(sig_idx);
 		sig=sigs[sig_idx];
-		console.log(sig);
 		bingo=['B','I','N','G','O'];
 		var tile;
 		var octave=0;
 		if(Math.random()>0.5)octave=1;
-		if(ridx==0)tile=f.mkLetter([W,W],bingo[cidx],'red','white');
-		else tile=f.mkTile([W,W],'#FFFFFF',clef,sig,octave,note,mod);
-		ctx.drawImage(tile,W*cidx,W*ridx);
+		color='red';
+		fill='white';
+		if(ridx==0){
+//			tile=f.mkLetter([W,W],bingo[cidx],color,fill);
+			tile=f.mkString([card.width,W],bingo,color,fill);
+			if(cidx==0)
+				ctx.drawImage(tile,W*cidx,0);
+		}
+		else{
+			tile=f.mkTile([W,W],'#FFFFFF',clef,sig,octave,note,mod);
+			ctx.drawImage(tile,W*cidx,W*ridx);
+		}
 	}}
 
-	}}//rcard,card
+//	}}//rcard,card
 }
 </script>
 </head>
