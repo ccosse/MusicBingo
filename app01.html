@@ -1,0 +1,295 @@
+<html>
+<head>
+<style>
+	body{background-color:red;}
+	@font-face {
+		font-family: 'Mickey';
+		src:url('mickey.ttf') format('truetype');
+	}
+	.tile{border:1px solid black;}
+</style>
+<script type="text/javascript" src="sigs.js"></script>
+<script type="text/javascript">
+var mkBrightColor=function(){
+	var hexvals=['C','D','E','F'];
+	var rval='#';
+	for(var dummy=0;dummy<6;dummy++){
+		var hidx=parseInt(Math.random()*hexvals.length);
+		rval+=hexvals[hidx];
+	}
+	return rval;
+}
+var Factory=function(){
+	var me={};
+	me.tc=new Image();
+	me.tc.src='treble_clef.png';
+	me.bc=new Image();
+	me.bc.src='base_clef.png';
+	me.img_flat=new Image();
+	me.img_flat.src='flat.png';
+	me.img_sharp=new Image();
+	me.img_sharp.src='sharp.png';
+	me.img_note=new Image();
+	me.img_note.src='notehead.png';
+
+	var dummy1=document.createElement('div').appendChild(me.tc);
+	var dummy2=document.createElement('div').appendChild(me.bc);
+	var dummy3=document.createElement('div').appendChild(me.img_flat);
+	var dummy4=document.createElement('div').appendChild(me.img_sharp);
+	var dummy5=document.createElement('div').appendChild(me.img_note);
+	var inv=document.createElement("div");
+	inv.style.visibility="hidden";
+	inv.style.height='0px';
+	inv.appendChild(dummy1);
+	inv.appendChild(dummy2);
+	inv.appendChild(dummy3);
+	inv.appendChild(dummy4);
+	inv.appendChild(dummy5);
+	document.body.appendChild(inv);
+
+	me.mkTile=function(bbox,fill,clef,sig,octave,note,mod){
+		var w=bbox[0];h=bbox[1];
+		var c=document.createElement("canvas");
+		c.className="tile";
+		c.width=w;
+		c.height=h;
+		var ctx=c.getContext("2d");
+		ctx.fillStyle = fill;
+		ctx.fillRect(0,0,w,h);
+
+		//draw the clef image:
+		//alert(clef+'_clef.png');
+		var img_clef=me.bc;
+		if(clef=='treble')
+			img_clef=me.tc;
+
+		w0_clef=img_clef.width;
+		h0_clef=img_clef.height;
+		h1_clef=parseInt(0.75*h);//this needs to scale;4*dy ~ dy_on_clef
+		w1_clef=parseInt(h1_clef*w0_clef/h0_clef);
+		img_clef.width=w1_clef+'';
+		img_clef.height=h1_clef+'';
+		console.log(h);
+		console.log(h0_clef);
+		console.log(h1_clef);
+		x_offset=parseInt(w1_clef/3.);
+		y_offset=parseInt(h/2.-h1_clef/2.);
+		console.log(y_offset);
+		ctx.drawImage(img_clef,x_offset,y_offset,img_clef.width,img_clef.height);
+
+		x0=x_offset;
+		x1=w-x_offset;
+		y0=parseInt(y_offset+h1_clef*(1-100/428));//Low A
+		dy=50;//this is the main scale parameter
+
+		//pre-calculate yy of note to decide if draw ledger lines:
+		cidxs=['C','D','E','F','G','A','B','C'];//counting from y0
+		var y_note=y0+0.5*dy-parseInt(cidxs.indexOf(note)*dy/2.)-octave*7*dy/2;
+		if(clef=='base')y_note+=dy;
+
+		for(var yidx=-2;yidx<7;yidx++){
+			var yy=y0-dy*yidx;
+			ctx.beginPath();
+			ctx.strokeStyle = 'black';
+			if(yidx<0||yidx>4){
+					if(y_note>yy-dy && yidx<0){
+						ctx.strokeStyle = 'black';
+						ctx.moveTo(w/2+dy/2,yy);
+						ctx.lineTo(w/2+3*dy,yy);
+						ctx.stroke();
+					}
+						if(y_note<yy && yidx>4){
+						ctx.moveTo(w/2+dy/2,yy);
+						ctx.lineTo(w/2+3*dy,yy);
+						ctx.stroke();
+					}
+			}
+			else{
+				ctx.strokeStyle = 'black';
+				ctx.moveTo(x0,yy);
+				ctx.lineTo(x1,yy);
+				ctx.stroke();
+			}
+		}
+
+		//draw the key-signature
+		major_intervals=[0,2,2,1,2,2,2,1];
+		white0=30;
+		white=white0;
+		whites=[];
+		for(var widx=0;widx<major_intervals.length;widx++){
+			white+=octave*12+major_intervals[widx];
+			whites.push(white);
+		}
+		console.log(whites);
+
+
+		//draw the requested note
+		var dx=0;
+
+	//	for(var widx=0;widx<whites.length;widx++){
+		if(note){
+		var widx=cidxs.indexOf(note);
+		var yy=y0+0.5*dy-parseInt(widx*dy/2.)-octave*7*dy/2;
+		if(clef=='base')
+			yy+=dy;
+
+		var img_flat=me.img_flat;
+		img_flat.width=parseInt(2*dy*img_flat.width/img_flat.height)+'';
+		img_flat.height=2*dy+'';
+		if(mod==-1){
+			ctx.drawImage(img_flat,w/2+dx,yy-dy,img_flat.width,img_flat.height);
+		}
+		var img_sharp=me.img_sharp;
+		img_sharp.width=parseInt(2*dy*img_sharp.width/img_sharp.height)+'';
+		img_sharp.height=2*dy+'';
+		if(mod==1){
+			ctx.drawImage(img_sharp,w/2+dx,yy-parseInt(dy/2),img_sharp.width,img_sharp.height);
+		}
+		dx+=img_sharp.width;
+		var img_note=me.img_note;
+		img_note.width=parseInt(dy*img_note.width/img_note.height)+'';
+		img_note.height=dy+'';
+		console.log('clef='+clef);
+
+		ctx.drawImage(img_note,w/2+dx,yy,img_note.width,img_note.height);
+		dx+=img_note.width;
+		}//if(note)
+	//	}//widx
+
+		if(sig['sharplist'].length>0){
+			console.log("SHARPS");
+			var img_sharp=me.img_sharp;
+			img_sharp.width=parseInt(2*dy*img_sharp.width/img_sharp.height)+'';
+			img_sharp.height=2*dy+'';
+			for(var sidx=0;sidx<sig['sig_coords'].length;sidx++){
+				var coord=sig['sig_coords'][sidx];
+				var xx=w/3+coord[0]*img_sharp.width*.7;
+				var yyy;
+				if(clef=='treble')
+					yyy=y0-4*dy+dy/2*coord[1];
+				else if(clef=='base')
+					yyy=y0-5*dy+dy/2*coord[1];
+				ctx.drawImage(img_sharp,xx,yyy,img_sharp.width,img_sharp.height);
+			}
+		}
+		if(sig['flatlist'].length>0){
+			console.log("FLATS");
+			var img_flat=me.img_flat;
+			img_flat.width=parseInt(2*dy*img_flat.width/img_flat.height)+'';
+			img_flat.height=2*dy+'';
+			for(var sidx=0;sidx<sig['sig_coords'].length;sidx++){
+				var coord=sig['sig_coords'][sidx];
+				var xx=w/3+coord[0]*img_flat.width*.7;
+				var yyy;
+				if(clef=='treble')
+					yyy=y0-4.5*dy+dy/2*coord[1];
+				else if(clef=='base')
+					yyy=y0-5.5*dy+dy/2*coord[1];
+				ctx.drawImage(img_flat,xx,yyy,img_flat.width,img_flat.height);
+			}
+		}
+
+		//Black surrounding box:
+		ctx.strokeStyle = 'black';
+		ctx.moveTo(0,0);
+		ctx.lineTo(0,w-1);
+		ctx.lineTo(h-1,w-1);
+		ctx.lineTo(h-1,0);
+		ctx.lineTo(0,0);
+		ctx.stroke();
+
+		return c;
+	}
+	me.mkLetter=function(bbox,letter,color,fill){
+		var w=bbox[0];h=bbox[1];
+		var c=document.createElement("canvas");
+		c.width=w;
+		c.height=h;
+		var ctx=c.getContext("2d");
+		ctx.fillStyle = fill;
+		ctx.fillRect(0,0,w,h);
+		ctx.font = w+"px Mickey";
+		ctx.fillStyle = color;
+		var yoffset=w/2-ctx.measureText('N').width/2;
+		var offset=w/2-ctx.measureText(letter).width/2;
+		ctx.fillText(letter, offset, w-yoffset);
+		return c;
+	}
+	me.mkString=function(bbox,strarray,color,fill){
+		var w=bbox[0];h=bbox[1];
+		var c=document.createElement("canvas");
+		c.width=w;
+		c.height=h;
+		var ctx=c.getContext("2d");
+		ctx.fillStyle = fill;
+		ctx.fillRect(0,0,w,h);
+		ctx.font = w+"px Mickey";
+		ctx.fillStyle = color;
+
+		var dx=parseInt(w/strarray.length);
+		var dy=h;
+		for(var cidx=0;cidx<strarray.length;cidx++){
+			var tile=me.mkLetter([dx,dy],strarray[cidx],color,fill);
+			ctx.drawImage(tile,dx*cidx,0);
+		}
+		return c;
+
+	}
+	return me;
+}
+
+var init=function(){
+	var f=new Factory();
+	var sigs=mksigs();
+	clefs=['treble','base'];
+	var NCOL=3;
+	var W=parseInt(window.innerWidth/NCOL);
+//	var W=2250/10.;//parseInt(window.innerWidth/5.);
+
+	var card=document.createElement("canvas");
+	card.width=W*NCOL;
+	card.height=W*(NCOL+1);
+//	card.width=2550;//W*5*2;
+//	card.height=3300;//W*6*2;
+	document.body.appendChild(card);
+	var ctx=card.getContext("2d");
+	ctx.fillStyle = 'black';
+	ctx.fillRect(0,0,card.width,card.height);
+
+//	for(var rcard=0;rcard<2;rcard++){//4 cards on 8.5x11 page
+//	for(var ccard=0;ccard<2;ccard++){
+	for(var ridx=0;ridx<6;ridx++){
+	for(var cidx=0;cidx<5;cidx++){
+		clef=clefs[0];
+		//if(Math.random()>0.5)clef=clefs[1];
+		notes=['C','D','E','F','G','A','B'];
+		note=notes[parseInt(notes.length*Math.random())];
+		mod=0;//parseInt(-2+4*Math.random());//-1,0,+1 ~ flat,natural,sharp
+		sig_idx=0;//parseInt(8-Math.random()*(15.)).toString();
+		sig=sigs[sig_idx];
+		bingo=['B','I','N','G','O'];
+		var tile;
+		var octave=0;
+		if(Math.random()>0.5)octave=1;
+		color='red';
+		fill='white';
+		if(ridx==0){
+//			tile=f.mkLetter([W,W],bingo[cidx],color,fill);
+			tile=f.mkString([card.width,W],bingo,color,fill);
+			if(cidx==0)
+				ctx.drawImage(tile,W*cidx,0);
+		}
+		else{
+			tile=f.mkTile([W,W],'#FFFFFF',clef,sig,octave,note,mod);
+			ctx.drawImage(tile,W*cidx,W*ridx);
+		}
+	}}
+
+//	}}//rcard,card
+}
+</script>
+</head>
+<body onload='init();'>
+</body>
+</html>

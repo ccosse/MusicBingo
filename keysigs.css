@@ -1,0 +1,14 @@
+.keysigs{background-color:turquoise;}
+.sigspot{width:30px;height:20px;background-color:#00FF00;}
+.majspot{width:100px;height:20px;background-color:#00FFFF;}
+.minspot{width:100px;height:20px;background-color:#FFFF00;}
+.spot{
+	padding-left:0px;
+	padding-right:0px;
+	padding-bottom:0px;
+	padding-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
