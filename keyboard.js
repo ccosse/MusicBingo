@@ -7,7 +7,6 @@ var Keyboard=function(W){
 	me.widget.className="keyboard";
 	me.canvas=document.createElement("canvas")
 	me.canvas.width=window.innerWidth
-//	me.canvas.height=200;
 	me.widget.appendChild(me.canvas)
 
 me.mkKey=function(ktype,tlcx,dx){
@@ -84,6 +83,7 @@ me.mkKey=function(ktype,tlcx,dx){
 			me.kw1=parseInt(me.W*SF/52);
 			me.kw=me.kw1*52;
 			me.kh=parseInt(me.kw/9.15);
+			me.canvas.height=me.kh;
 
 			me.tlcx=(me.W-me.kw)/2
 			me.tlcy=0//(me.H-me.kh)/2

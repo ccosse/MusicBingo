@@ -16,7 +16,7 @@ body{
 	border-spacing:0px;
 	background-color:pink;height:100%;width:100%;text-align:center;
 }
-#nav{background-color:red;vertical-align:top;}
+#nav{background-color:red;vertical-align:top;width:100%;}
 #lhs{background-color:lightgreen;width:100%;}
 #rhs{background-color:lightblue;width:100%;}
 </style>
@@ -34,7 +34,6 @@ var init=function(){
 	var H=window.innerHeight;
 
 	get('nav').style.height=parseInt(0.1*H);
-//	get('lhs').style.height=parseInt(0.8*H);
 //	get('rhs').style.height=parseInt(0.8*H);
 //	get('kbd').style.height=parseInt(0.1*H);
 
@@ -44,11 +43,13 @@ var init=function(){
 	get('lhs').appendChild(staff.widget);
 	window.keyboard=Keyboard(window.innerWidth);
 	get('kbd').appendChild(window.keyboard.widget);
+	get('lhs').style.height=parseInt(H-0.1*H-window.keyboard.canvas.height);
+
 	get('lhs').style.width=parseInt(window.innerWidth/2.);
 
 	var rhs_canvas=document.createElement("canvas");
 	rhs_canvas.width=parseInt(window.innerWidth/2.);
-//	rhs_canvas.height=parseInt(0.9*window.innerHeight);
+	rhs_canvas.height=parseInt(H-0.1*H-window.keyboard.canvas.height);
 	rhs.appendChild(rhs_canvas);
 }
 </script>
