@@ -32,24 +32,19 @@ body{
 var init=function(){
 	var W=window.innerWidth;
 	var H=window.innerHeight;
-	var nav=get('nav');
-	nav.style.height=parseInt(0.1*H);
-	var lhs=get('lhs');
-	nav.style.height=parseInt(0.9*H);
-	var rhs=get('rhs');
-	rhs.style.height=parseInt(0.9*H);
 
 	get('nav').style.height=parseInt(0.1*H);
-	get('lhs').style.height=parseInt(0.9*H);
-	get('rhs').style.height=parseInt(0.9*H);
+	get('lhs').style.height=parseInt(0.8*H);
+	get('rhs').style.height=parseInt(0.8*H);
+	get('kbd').style.height=parseInt(0.1*H);
 
 	var keysigs=KeySigs();
-	lhs.appendChild(keysigs.widget);
+	get('lhs').appendChild(keysigs.widget);
 	var staff=Staff();
-	lhs.appendChild(staff.widget);
-	var keyboard=Keyboard();
-	lhs.appendChild(keyboard.widget);
-	lhs.style.width=parseInt(window.innerWidth/2.);
+	get('lhs').appendChild(staff.widget);
+	var keyboard=Keyboard(window.innerWidth);
+	get('kbd').appendChild(keyboard.widget);
+	get('lhs').style.width=parseInt(window.innerWidth/2.);
 
 	var rhs_canvas=document.createElement("canvas");
 	rhs_canvas.width=parseInt(window.innerWidth/2.);
@@ -72,6 +67,13 @@ var init=function(){
 	</td>
 	<td>
 		<div id="rhs"></div>
+	</td>
+</tr>
+
+
+<tr>
+	<td colspan="2">
+		<div id="kbd"></div>
 	</td>
 </tr>
 </table>
