@@ -119,8 +119,8 @@ var mksigs=function(){
 				'sharplist':['F','C','G','D'],
 				'sigkey':'4',
 				'sig_coords':[[1,0],[2,3],[3,-1],[4,2]],
-				'minkey_midi_roots':[28,40,52,64,76,88,100],
-				'majkey_midi_roots':[31,43,55,67,79,91,103]
+				'minkey_midi_roots':[25,37,49,61,72,84,96],
+				'majkey_midi_roots':[28,40,52,64,76,88,100]
 			},
 			'5':{
 				'majkey':'B Major',

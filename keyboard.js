@@ -69,10 +69,10 @@ me.mkKey=function(ktype,tlcx,dx){
 				}
 			}
 			else{
-				console.log(ktype)
+//				console.log(ktype)
 				p.push(tlcx+me.kw1-dx,tlcy)
-				p.push(tlcx+me.kw1+2*dx-1,tlcy)
-				p.push(tlcx+me.kw1+2*dx-1,tlcy+bh)
+				p.push(tlcx+me.kw1+dx,tlcy)
+				p.push(tlcx+me.kw1+dx,tlcy+bh)
 				p.push(tlcx+me.kw1-dx,tlcy+bh)
 				p.push(tlcx+me.kw1-dx,tlcy)
 			}
@@ -203,8 +203,8 @@ me.mkKey=function(ktype,tlcx,dx){
 
 	for(var kidx=0;kidx<me.keys.length;kidx++){
 	var k=me.keys[kidx]
-	console.log(k['name'])
-	console.log(k['polygon'].length)
+//	console.log(k['name'])
+//	console.log(k['polygon'].length)
 	ctx.beginPath();
 	ctx.lineWidth = 1;
 	ctx.lineCap='round';
@@ -212,9 +212,9 @@ me.mkKey=function(ktype,tlcx,dx){
 	var p=k['polygon'];
 	ctx.moveTo(p[0],p[1]);
 	for(var pidx=0;pidx<p.length;pidx+=2){
-		console.log("move to: "+p[pidx]+","+p[pidx+1])
+//		console.log("move to: "+p[pidx]+","+p[pidx+1])
 		if(!p[pidx+2]){
-			console.log("closing path")
+//			console.log("closing path")
 			ctx.closePath();
 			ctx.fillStyle = '#FFFFFF';
 			if(k['isBlack'])ctx.fillStyle = '#000000';
@@ -222,15 +222,22 @@ me.mkKey=function(ktype,tlcx,dx){
 			ctx.stroke();
 		}
 		else{
-			console.log("line to: "+p[pidx+2]+","+p[pidx+3])
+//			console.log("line to: "+p[pidx+2]+","+p[pidx+3])
 			ctx.lineTo(p[pidx+2],p[pidx+3]);
 		}
 	}
 	}
-
+	me.receive=function(val,sig){
+		console.log('keyboard.receive: '+val+","+sig['majkey'])
+	}
+	me.allOff=function(){
+		for(var kidx=0;kidx<me.keys.length;kidx++)
+			if(me.keys[kidx]['isBlack'])me.colorKey(kidx,'black')
+			else me.colorKey(kidx,'white')
+	}
 	me.colorKey=function(kidx,color){
 		ctx.beginPath();
-		console.log("colorKey:"+kidx)
+//		console.log("colorKey:"+kidx)
 		var k=me.keys[kidx]
 		var p=k['polygon'];
 		ctx.moveTo(p[0],p[1]);
@@ -241,6 +248,7 @@ me.mkKey=function(ktype,tlcx,dx){
 				ctx.closePath();
 				ctx.fillStyle = color;
 				ctx.fill();
+				ctx.strokeStyle = 'black';
 				ctx.stroke();
 			}
 			else{
@@ -261,8 +269,8 @@ me.mkKey=function(ktype,tlcx,dx){
 			//ktypes are left,center,right,black
 			var key=me.keys[kidx]
 			var ktype=key['ktype']
-			console.log(ktype)
-			console.log('polygon is '+key['polygon'].length+" in length")
+//			console.log(ktype)
+//			console.log('polygon is '+key['polygon'].length+" in length")
 			if(ktype=='black'){
 				var xmin=key['polygon'][0]
 				var xmax=key['polygon'][2]
@@ -334,11 +342,14 @@ me.mkKey=function(ktype,tlcx,dx){
 		var bcr=me.canvas.getBoundingClientRect()
 		var x=e.clientX
 		var y=e.clientY-bcr.top
-		console.log(x+","+y)
+//		console.log(x+","+y)
+
+		me.allOff()
 
 //Now which kidx was it?
 		var kidx;//=parseInt(Math.random()*88)
 		kidx=me.getKidx(x,y)
+		console.log(kidx+","+parseInt(kidx+21))
 		me.colorKey(kidx,'orange');
 	}
 	me.canvas.addEventListener('click', me.clickCB, false);
