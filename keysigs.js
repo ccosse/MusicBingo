@@ -20,6 +20,13 @@ var KeySigs=function(){
 		window.staff.clear()
 		window.staff.drawStaff()
 		window.staff.drawKeysig(sigkey)
+		window.staff.drawNote(false,false,3,'C')
+		window.staff.drawNote(false,false,3,'D')
+		window.staff.drawNote(false,false,3,'E')
+		window.staff.drawNote(false,false,3,'F')
+		window.staff.drawNote(false,false,3,'G')
+		window.staff.drawNote(false,false,3,'A')
+		window.staff.drawNote(false,false,3,'B')
 
 //Let's just apply keys from here:
 		min_root=me.sigs[sigkey]['min_root']//me.getNext(sigkey,'minkey_midi_roots',59)

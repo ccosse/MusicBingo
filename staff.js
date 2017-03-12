@@ -1,6 +1,7 @@
 var Staff=function(){
 	var me={};
 	me.sigs=mksigs();
+	me.x0=0
 	me.tc=new Image();
 	me.tc.src='white_treble_clef.png';
 	me.bc=new Image();
@@ -37,11 +38,28 @@ var Staff=function(){
 
 	me.clear=function(){
 		var bcr=me.canvas.getBoundingClientRect()
+		me.x0=bcr.width/2
 		var ctx=me.canvas.getContext("2d")
 		ctx.fillStyle="#333333"
 		ctx.fillRect(0,0,bcr.width,bcr.height)
 	}
 
+	me.drawNote=function(sharp,flat,octave,note){
+		notes=['C','D','E','F','G','A','B']
+		var bcr=me.widget.getBoundingClientRect()
+		var h2=bcr.height/2
+		var dy=parseInt(bcr.height/18.)
+		var y0=h2-dy-notes.indexOf(note)*dy/2//-yidx*dy
+
+		if(sharp)
+			ctx.drawImage(me.img_sharp,me.x0,y0-dy/2,dy,2*dy)
+		if(flat)
+			ctx.drawImage(me.img_flat,me.x0,y0-dy/2,dy,2*dy)
+
+		me.x0+=dy
+		ctx.drawImage(me.img_note,me.x0,y0,dy,dy)
+		me.x0+=dy
+	}
 	me.drawKeysig=function(sigidx){
 		var sig=me.sigs[sigidx]
 		var bcr=me.widget.getBoundingClientRect()
