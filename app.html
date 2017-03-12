@@ -14,9 +14,9 @@ body{
 #trimtable{
 	border-collapse:collapse;
 	border-spacing:0px;
-	background-color:pink;height:100%;width:100%;text-align:center;
+	background-color:#333333;height:100%;width:100%;text-align:center;
 }
-#nav{background-color:red;vertical-align:top;width:100%;}
+#nav{background-color:#888888;vertical-align:top;width:100%;}
 #lhs{background-color:lightgreen;width:100%;}
 #rhs{background-color:lightblue;width:100%;}
 </style>
@@ -39,13 +39,17 @@ var init=function(){
 
 	var keysigs=KeySigs();
 	get('lhs').appendChild(keysigs.widget);
-	var staff=Staff();
+	window.staff=Staff();
 	get('lhs').appendChild(staff.widget);
 	window.keyboard=Keyboard(window.innerWidth);
 	get('kbd').appendChild(window.keyboard.widget);
 	get('lhs').style.height=parseInt(H-0.1*H-window.keyboard.canvas.height);
+	get('staff').style.height=parseInt(H-0.1*H-window.keyboard.canvas.height
+		-keysigs.widget.getBoundingClientRect().height);
 
 	get('lhs').style.width=parseInt(window.innerWidth/2.);
+
+	window.staff.drawStaff()
 
 	var rhs_canvas=document.createElement("canvas");
 	rhs_canvas.width=parseInt(window.innerWidth/2.);

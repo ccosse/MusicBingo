@@ -10,7 +10,9 @@ var mksigs=function(){
 				'sigkey':'-7',
 				'sig_coords':[[1,4],[2,1],[3,5],[4,2],[5,6],[6,3],[7,7]],
 				'minkey_midi_roots':[32,44,56,68,80,92,104],
-				'majkey_midi_roots':[23,35,47,59,71,83,95,107]
+				'majkey_midi_roots':[23,35,47,59,71,83,95,107],
+				'min_root':44,
+				'maj_root':47
 			},
 			'-6':{
 				'majkey':'G Flat Major',
@@ -20,7 +22,9 @@ var mksigs=function(){
 				'sigkey':'-6',
 				'sig_coords':[[1,4],[2,1],[3,5],[4,2],[5,6],[6,3]],
 				'minkey_midi_roots':[27,39,51,63,75,87,99],
-				'majkey_midi_roots':[30,42,54,66,78,90,102]
+				'majkey_midi_roots':[30,42,54,66,78,90,102],
+				'min_root':51,
+				'maj_root':54
 			},
 			'-5':{
 				'majkey':'D Flat Major',
@@ -30,7 +34,9 @@ var mksigs=function(){
 				'sigkey':'-5',
 				'sig_coords':[[1,4],[2,1],[3,5],[4,2],[5,6]],
 				'minkey_midi_roots':[22,34,46,58,70,82,94,106],
-				'majkey_midi_roots':[25,37,49,61,73,85,97]
+				'majkey_midi_roots':[25,37,49,61,73,85,97],
+				'min_root':46,
+				'maj_root':49
 			},
 			'-4':{
 				'majkey':'A Flat Major',
@@ -40,7 +46,9 @@ var mksigs=function(){
 				'sigkey':'-4',
 				'sig_coords':[[1,4],[2,1],[3,5],[4,2]],
 				'minkey_midi_roots':[29,41,53,65,77,89,101],
-				'majkey_midi_roots':[32,44,56,68,80,92,104]
+				'majkey_midi_roots':[32,44,56,68,80,92,104],
+				'min_root':53,
+				'maj_root':56
 			},
 			'-3':{
 				'majkey':'E Flat Major',
@@ -50,7 +58,9 @@ var mksigs=function(){
 				'sigkey':'-3',
 				'sig_coords':[[1,4],[2,1],[3,5]],
 				'minkey_midi_roots':[24,36,48,60,72,84,96,108],
-				'majkey_midi_roots':[27,39,51,63,75,87,99]
+				'majkey_midi_roots':[27,39,51,63,75,87,99],
+				'min_root':48,
+				'maj_root':51
 			},
 			'-2':{
 				'majkey':'B Flat Major',
@@ -60,7 +70,9 @@ var mksigs=function(){
 				'sigkey':'-2',
 				'sig_coords':[[1,4],[2,1]],
 				'minkey_midi_roots':[31,43,55,67,79,91,103],
-				'majkey_midi_roots':[22,34,46,58,70,82,94,106]
+				'majkey_midi_roots':[22,34,46,58,70,82,94,106],
+				'min_root':55,
+				'maj_root':58
 			},
 			'-1':{
 				'majkey':'F Major',
@@ -70,7 +82,9 @@ var mksigs=function(){
 				'sigkey':'-1',
 				'sig_coords':[[1,4]],
 				'minkey_midi_roots':[26,38,50,62,74,86,98],
-				'majkey_midi_roots':[29,41,53,65,77,89,101]
+				'majkey_midi_roots':[29,41,53,65,77,89,101],
+				'min_root':50,
+				'maj_root':53
 			},
 			'0':{
 				'majkey':'C Major',
@@ -80,7 +94,9 @@ var mksigs=function(){
 				'sigkey':'0',
 				'sig_coords':[],
 				'minkey_midi_roots':[21,33,45,57,69,81,93,105],
-				'majkey_midi_roots':[24,36,48,60,72,84,96,108]
+				'majkey_midi_roots':[24,36,48,60,72,84,96,108],
+				'min_root':57,
+				'maj_root':60
 			},
 			'1':{
 				'majkey':'G Major',
@@ -90,7 +106,9 @@ var mksigs=function(){
 				'sigkey':'1',
 				'sig_coords':[[1,0]],
 				'minkey_midi_roots':[28,40,52,64,76,88,100],
-				'majkey_midi_roots':[31,43,55,67,79,91,103]
+				'majkey_midi_roots':[31,43,55,67,79,91,103],
+				'min_root':52,
+				'maj_root':55
 			},
 			'2':{
 				'majkey':'D Major',
@@ -100,7 +118,9 @@ var mksigs=function(){
 				'sigkey':'2',
 				'sig_coords':[[1,0],[2,3]],
 				'minkey_midi_roots':[23,35,47,59,71,83,95,107],
-				'majkey_midi_roots':[26,38,50,62,74,86,98]
+				'majkey_midi_roots':[26,38,50,62,74,86,98],
+				'min_root':59,
+				'maj_root':62
 			},
 			'3':{
 				'majkey':'A Major',
@@ -110,7 +130,9 @@ var mksigs=function(){
 				'sigkey':'3',
 				'sig_coords':[[1,0],[2,3],[3,-1]],
 				'minkey_midi_roots':[30,42,54,66,78,90,102],
-				'majkey_midi_roots':[21,33,45,57,69,81,93,105]
+				'majkey_midi_roots':[21,33,45,57,69,81,93,105],
+				'min_root':54,
+				'maj_root':57
 			},
 			'4':{
 				'majkey':'E Major',
@@ -120,7 +142,9 @@ var mksigs=function(){
 				'sigkey':'4',
 				'sig_coords':[[1,0],[2,3],[3,-1],[4,2]],
 				'minkey_midi_roots':[25,37,49,61,72,84,96],
-				'majkey_midi_roots':[28,40,52,64,76,88,100]
+				'majkey_midi_roots':[28,40,52,64,76,88,100],
+				'min_root':61,
+				'maj_root':64
 			},
 			'5':{
 				'majkey':'B Major',
@@ -130,7 +154,9 @@ var mksigs=function(){
 				'sigkey':'5',
 				'sig_coords':[[1,0],[2,3],[3,-1],[4,2],[5,5]],
 				'minkey_midi_roots':[32,44,56,68,80,92,104],
-				'majkey_midi_roots':[23,35,47,59,71,83,95,107]
+				'majkey_midi_roots':[23,35,47,59,71,83,95,107],
+				'min_root':56,
+				'maj_root':59
 			},
 			'6':{
 				'majkey':'F Sharp Major',
@@ -140,7 +166,9 @@ var mksigs=function(){
 				'sigkey':'6',
 				'sig_coords':[[1,0],[2,3],[3,-1],[4,2],[5,5],[6,1]],
 				'minkey_midi_roots':[27,39,51,63,75,87,99],
-				'majkey_midi_roots':[30,42,54,66,78,90,102]
+				'majkey_midi_roots':[30,42,54,66,78,90,102],
+				'min_root':63,
+				'maj_root':66
 			},
 			'7':{
 				'majkey':'C Sharp Major',
@@ -150,7 +178,9 @@ var mksigs=function(){
 				'sigkey':'7',
 				'sig_coords':[[1,0],[2,3],[3,-1],[4,2],[5,5],[6,1],[7,4]],
 				'minkey_midi_roots':[22,34,46,58,70,82,94,106],
-				'majkey_midi_roots':[25,37,49,61,73,85,97]
+				'majkey_midi_roots':[25,37,49,61,73,85,97],
+				'min_root':58,
+				'maj_root':61
 			},
 		}
 		return sigs

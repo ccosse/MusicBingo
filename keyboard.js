@@ -185,7 +185,7 @@ me.mkKey=function(ktype,tlcx,dx){
 					}
 				)
 
-				me.kidxByMidi[`midi`]=me.keys.length-1
+				me.kidxByMidi[midi.toString()]=me.keys.length-1
 				midi+=1
 				count+=1
 				if(count>12)count=1
