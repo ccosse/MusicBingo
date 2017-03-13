@@ -38,23 +38,40 @@ var Staff=function(){
 
 	me.clear=function(){
 		var bcr=me.canvas.getBoundingClientRect()
-		me.x0=bcr.width/2
+		me.x0=bcr.width/3
 		var ctx=me.canvas.getContext("2d")
 		ctx.fillStyle="#333333"
 		ctx.fillRect(0,0,bcr.width,bcr.height)
 	}
 
-	me.drawNote=function(sharp,flat,octave,note){
-		notes=['C','D','E','F','G','A','B']
+	me.drawNote=function(sharp,flat,key,keyname2use){
+		notes=['A','B','C','D','E','F','G']
 		var bcr=me.widget.getBoundingClientRect()
 		var h2=bcr.height/2
 		var dy=parseInt(bcr.height/18.)
-		var y0=h2-dy-notes.indexOf(note)*dy/2//-yidx*dy
 
+		var octave=key['octave']
+		if(key['midi']==56)octave=4//G# 3rd octave needs treated as 4th octave
+		var y0=h2-0*dy-notes.indexOf(keyname2use)*dy/2+(4-octave)*3.5*dy
+		if(octave<4){
+			y0=h2-1.5*dy-notes.indexOf(keyname2use)*dy/2+(4-octave)*12/2*dy
+		}
 		if(sharp)
 			ctx.drawImage(me.img_sharp,me.x0,y0-dy/2,dy,2*dy)
 		if(flat)
 			ctx.drawImage(me.img_flat,me.x0,y0-dy/2,dy,2*dy)
+
+//if midi<61 then draw 2x ledger
+		if(key['midi']<61 && octave>3){
+			for(var yidx=-1;yidx<1;yidx++){
+				ctx.strokeStyle='red'
+				ctx.beginPath()
+				ctx.moveTo(me.x0+dy/2,h2-dy/2-yidx*dy)
+				ctx.lineTo(me.x0+dy/2+2*dy,h2-dy/2-yidx*dy)
+				ctx.stroke()
+				ctx.closePath()
+			}
+		}
 
 		me.x0+=dy
 		ctx.drawImage(me.img_note,me.x0,y0,dy,dy)

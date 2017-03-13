@@ -20,6 +20,7 @@ var KeySigs=function(){
 		window.staff.clear()
 		window.staff.drawStaff()
 		window.staff.drawKeysig(sigkey)
+/*
 		window.staff.drawNote(false,false,3,'C')
 		window.staff.drawNote(false,false,3,'D')
 		window.staff.drawNote(false,false,3,'E')
@@ -27,7 +28,7 @@ var KeySigs=function(){
 		window.staff.drawNote(false,false,3,'G')
 		window.staff.drawNote(false,false,3,'A')
 		window.staff.drawNote(false,false,3,'B')
-
+*/
 //Let's just apply keys from here:
 		min_root=me.sigs[sigkey]['min_root']//me.getNext(sigkey,'minkey_midi_roots',59)
 		maj_root=me.sigs[sigkey]['maj_root']//me.getNext(sigkey,'majkey_midi_roots',59)
@@ -67,11 +68,24 @@ var KeySigs=function(){
 		if(key['name']=='E#')keyname2use='F'//this one is different;f-flat=E
 		if(key['name']=='F#')keyname2use='G'//ie g-flat
 		if(key['name']=='G#')keyname2use='A'
-
-		if(me.sigs[sigkey]['flatlist'].indexOf(keyname2use)>-1)
-				keycolor='orange'
+		if(me.sigs[sigkey]['flatlist'].indexOf(keyname2use)>-1){
+			keycolor='orange'
+			if(sigkey=='-7'){
+				keyname2use='C'
+				console.log("special case for c-flat major")
+			}
+		}
+		else keyname2use=key['name'][0]
 
 		window.keyboard.colorKey(root-21,keycolor)
+
+		var sharp=false;
+//		if(keycolor=='red')sharp=true;
+		var flat=false;
+//		if(keycolor=='orange')flat=true;
+		console.log(key['name']+","+keyname2use+","+key['octave'])
+		window.staff.drawNote(sharp,flat,key,keyname2use)
+
 		for(var idx=0;idx<indices.length-1;idx++){
 			root+=indices[idx]
 //			console.log("root: "+root)
@@ -82,8 +96,9 @@ var KeySigs=function(){
 			var key=window.keyboard.keys[kidx]
 			console.log(key['name'],key['midi'])
 			keycolor='green'
-			if(me.sigs[sigkey]['sharplist'].indexOf(key['name'][0])>-1)
+			if(me.sigs[sigkey]['sharplist'].indexOf(key['name'][0])>-1){
 				keycolor='red'
+			}
 
 			var keyname2use=key['name']
 			if(key['name']=='A#')keyname2use='B'
@@ -94,9 +109,35 @@ var KeySigs=function(){
 			if(key['name']=='F#')keyname2use='G'//ie g-flat
 			if(key['name']=='G#')keyname2use='A'
 
-			if(me.sigs[sigkey]['flatlist'].indexOf(keyname2use)>-1)
-					keycolor='orange'
+			if(me.sigs[sigkey]['flatlist'].indexOf(keyname2use)>-1){
+				keycolor='orange'
+				if(sigkey=='-7' && key['name']=='E')
+					keyname2use='F'
+				else if(sigkey=='-6' && key['name']=='B')
+					keyname2use='C'
+			}
+			else if(sigkey=='6' && key['name']=='F'){
+				keyname2use='E'
+				console.log("changed kename2use -> E")
+			}
+			else if(sigkey=='7' && key['name']=='C'){
+				keyname2use='B'
+				console.log("changed kename2use -> B")
+			}
+			else if(sigkey=='7' && key['name']=='F'){
+				keyname2use='E'
+				console.log("changed kename2use -> E")
+			}
+			else keyname2use=key['name'][0]
+
 			window.keyboard.colorKey(root-21,keycolor)
+
+			var sharp=false;
+//			if(keycolor=='red')sharp=true;
+			var flat=false;
+//			if(keycolor=='orange')flat=true;
+			console.log(key['name']+","+keyname2use+","+key['octave'])
+			window.staff.drawNote(sharp,flat,key,keyname2use)
 		}
 	}//me.sigCB
 
