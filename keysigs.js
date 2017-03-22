@@ -184,7 +184,7 @@ var KeySigs=function(){
 			var img=new Image()
 			img.src='cof5.png'
 			img.width=parseInt(window.innerWidth/5.)
-			std.appendChild(img)
+//			std.appendChild(img)
 			std.className='cof'
 		}
 

@@ -54,6 +54,13 @@ var init=function(){
 	var rhs_canvas=document.createElement("canvas");
 	rhs_canvas.width=parseInt(window.innerWidth/2.);
 	rhs_canvas.height=parseInt(H-0.1*H-window.keyboard.canvas.height);
+
+	var img=new Image()
+	img.src='cof5.png'
+//	img.width=parseInt(window.innerWidth/5.)
+	rhs_canvas.getContext("2d").drawImage(img,0,0,rhs_canvas.height,rhs_canvas.height)
+//	std.className='cof'
+
 	rhs.appendChild(rhs_canvas);
 }
 </script>
